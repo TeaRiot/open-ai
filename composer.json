@@ -1,0 +1,33 @@
+{
+    "name": "teariot/open-ai",
+    "description": "OpenAI GPT-3 Api Client in PHP. This is a fork of https://github.com/orhanerday/open-ai",
+    "keywords": [
+        "orhanerday",
+        "open-ai",
+        "gpt-3",
+        "php",
+        "teariot"
+    ],
+    "homepage": "https://github.com/TeaRiot/open-ai",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TeaRiot",
+            "email": "teaRiot@yandex.ru",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "TeaRiot\\OpenAi\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
