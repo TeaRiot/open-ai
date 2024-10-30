@@ -15,8 +15,21 @@ class OpenAi
     protected $timeout = 0;
     protected $stream_method;
     protected $customUrl = "";
-    protected $proxy = "";
+
+    protected $proxyIp = "";
+    protected $proxyAccess = "";
+
     protected $curlInfo = [];
+
+    public function setProxyAccess(string $access)
+    {
+        $this->proxyAccess = $access;
+    }
+
+    public function setProxyIp(string $ip)
+    {
+        $this->proxyIp = $ip;
+    }
 
     public function __construct($OPENAI_API_KEY)
     {
@@ -933,17 +946,6 @@ class OpenAi
     public function setTimeout(int $timeout)
     {
         $this->timeout = $timeout;
-    }
-
-    /**
-     * @param  string  $proxy
-     */
-    public function setProxy(string $proxy)
-    {
-        if ($proxy && strpos($proxy, '://') === false) {
-            $proxy = 'https://'.$proxy;
-        }
-        $this->proxy = $proxy;
     }
 
     /**
