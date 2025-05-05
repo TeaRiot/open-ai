@@ -21,6 +21,8 @@ class OpenAi
 
     protected $curlInfo = [];
 
+    protected $urlClass = Url::class;
+
     public function setProxyAccess(string $access)
     {
         $this->proxyAccess = $access;
@@ -59,7 +61,7 @@ class OpenAi
      */
     public function listModels()
     {
-        $url = Url::fineTuneModel();
+        $url = ($this->urlClass)::fineTuneModel();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -73,7 +75,7 @@ class OpenAi
     public function retrieveModel($model)
     {
         $model = "/$model";
-        $url = Url::fineTuneModel().$model;
+        $url = ($this->urlClass)::fineTuneModel().$model;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -88,7 +90,7 @@ class OpenAi
     public function complete($opts)
     {
         $engine = $opts['engine'] ?? $this->engine;
-        $url = Url::completionURL($engine);
+        $url = ($this->urlClass)::completionURL($engine);
         unset($opts['engine']);
         $this->baseUrl($url);
 
@@ -114,7 +116,7 @@ class OpenAi
         }
 
         $opts['model'] = $opts['model'] ?? $this->model;
-        $url = Url::completionsURL();
+        $url = ($this->urlClass)::completionsURL();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -127,7 +129,7 @@ class OpenAi
      */
     public function createEdit($opts)
     {
-        $url = Url::editsUrl();
+        $url = ($this->urlClass)::editsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -140,7 +142,7 @@ class OpenAi
      */
     public function image($opts)
     {
-        $url = Url::imageUrl()."/generations";
+        $url = ($this->urlClass)::imageUrl()."/generations";
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -153,7 +155,7 @@ class OpenAi
      */
     public function imageEdit($opts)
     {
-        $url = Url::imageUrl()."/edits";
+        $url = ($this->urlClass)::imageUrl()."/edits";
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -166,7 +168,7 @@ class OpenAi
      */
     public function createImageVariation($opts)
     {
-        $url = Url::imageUrl()."/variations";
+        $url = ($this->urlClass)::imageUrl()."/variations";
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -181,7 +183,7 @@ class OpenAi
     public function search($opts)
     {
         $engine = $opts['engine'] ?? $this->engine;
-        $url = Url::searchURL($engine);
+        $url = ($this->urlClass)::searchURL($engine);
         unset($opts['engine']);
         $this->baseUrl($url);
 
@@ -196,7 +198,7 @@ class OpenAi
      */
     public function answer($opts)
     {
-        $url = Url::answersUrl();
+        $url = ($this->urlClass)::answersUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -210,7 +212,7 @@ class OpenAi
      */
     public function classification($opts)
     {
-        $url = Url::classificationsUrl();
+        $url = ($this->urlClass)::classificationsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -223,7 +225,7 @@ class OpenAi
      */
     public function moderation($opts)
     {
-        $url = Url::moderationUrl();
+        $url = ($this->urlClass)::moderationUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -248,7 +250,7 @@ class OpenAi
         }
 
         $opts['model'] = $opts['model'] ?? $this->chatModel;
-        $url = Url::chatUrl();
+        $url = ($this->urlClass)::chatUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -261,7 +263,7 @@ class OpenAi
      */
     public function transcribe($opts)
     {
-        $url = Url::transcriptionsUrl();
+        $url = ($this->urlClass)::transcriptionsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -274,7 +276,7 @@ class OpenAi
      */
     public function translate($opts)
     {
-        $url = Url::translationsUrl();
+        $url = ($this->urlClass)::translationsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -287,7 +289,7 @@ class OpenAi
      */
     public function uploadFile($opts)
     {
-        $url = Url::filesUrl();
+        $url = ($this->urlClass)::filesUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -299,7 +301,7 @@ class OpenAi
      */
     public function listFiles()
     {
-        $url = Url::filesUrl();
+        $url = ($this->urlClass)::filesUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -313,7 +315,7 @@ class OpenAi
     public function retrieveFile($file_id)
     {
         $file_id = "/$file_id";
-        $url = Url::filesUrl().$file_id;
+        $url = ($this->urlClass)::filesUrl().$file_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -327,7 +329,7 @@ class OpenAi
     public function retrieveFileContent($file_id)
     {
         $file_id = "/$file_id/content";
-        $url = Url::filesUrl().$file_id;
+        $url = ($this->urlClass)::filesUrl().$file_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -341,7 +343,7 @@ class OpenAi
     public function deleteFile($file_id)
     {
         $file_id = "/$file_id";
-        $url = Url::filesUrl().$file_id;
+        $url = ($this->urlClass)::filesUrl().$file_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'DELETE');
@@ -354,7 +356,7 @@ class OpenAi
      */
     public function createFineTune($opts)
     {
-        $url = Url::fineTuneUrl();
+        $url = ($this->urlClass)::fineTuneUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -366,7 +368,7 @@ class OpenAi
      */
     public function listFineTunes()
     {
-        $url = Url::fineTuneUrl();
+        $url = ($this->urlClass)::fineTuneUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -380,7 +382,7 @@ class OpenAi
     public function retrieveFineTune($fine_tune_id)
     {
         $fine_tune_id = "/$fine_tune_id";
-        $url = Url::fineTuneUrl().$fine_tune_id;
+        $url = ($this->urlClass)::fineTuneUrl().$fine_tune_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -394,7 +396,7 @@ class OpenAi
     public function cancelFineTune($fine_tune_id)
     {
         $fine_tune_id = "/$fine_tune_id/cancel";
-        $url = Url::fineTuneUrl().$fine_tune_id;
+        $url = ($this->urlClass)::fineTuneUrl().$fine_tune_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST');
@@ -408,7 +410,7 @@ class OpenAi
     public function listFineTuneEvents($fine_tune_id)
     {
         $fine_tune_id = "/$fine_tune_id/events";
-        $url = Url::fineTuneUrl().$fine_tune_id;
+        $url = ($this->urlClass)::fineTuneUrl().$fine_tune_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -422,7 +424,7 @@ class OpenAi
     public function deleteFineTune($fine_tune_id)
     {
         $fine_tune_id = "/$fine_tune_id";
-        $url = Url::fineTuneModel().$fine_tune_id;
+        $url = ($this->urlClass)::fineTuneModel().$fine_tune_id;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'DELETE');
@@ -436,7 +438,7 @@ class OpenAi
      */
     public function engines()
     {
-        $url = Url::enginesUrl();
+        $url = ($this->urlClass)::enginesUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -450,7 +452,7 @@ class OpenAi
      */
     public function engine($engine)
     {
-        $url = Url::engineUrl($engine);
+        $url = ($this->urlClass)::engineUrl($engine);
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -463,7 +465,7 @@ class OpenAi
      */
     public function embeddings($opts)
     {
-        $url = Url::embeddings();
+        $url = ($this->urlClass)::embeddings();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -478,7 +480,7 @@ class OpenAi
     {
         $data['model'] = $data['model'] ?? $this->chatModel;
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl();
+        $url = ($this->urlClass)::assistantsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -492,7 +494,7 @@ class OpenAi
     public function retrieveAssistant($assistantId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId;
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -507,7 +509,7 @@ class OpenAi
     public function modifyAssistant($assistantId, $data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId;
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -521,7 +523,7 @@ class OpenAi
     public function deleteAssistant($assistantId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId;
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'DELETE');
@@ -535,7 +537,7 @@ class OpenAi
     public function listAssistants($query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl();
+        $url = ($this->urlClass)::assistantsUrl();
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -553,7 +555,7 @@ class OpenAi
     public function createAssistantFile($assistantId, $fileId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId . '/files';
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId . '/files';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', ['file_id' => $fileId]);
@@ -568,7 +570,7 @@ class OpenAi
     public function retrieveAssistantFile($assistantId, $fileId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId . '/files/' . $fileId;
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId . '/files/' . $fileId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -583,7 +585,7 @@ class OpenAi
     public function listAssistantFiles($assistantId, $query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId . '/files';
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId . '/files';
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -601,7 +603,7 @@ class OpenAi
     public function deleteAssistantFile($assistantId, $fileId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::assistantsUrl() . '/' . $assistantId . '/files/' . $fileId;
+        $url = ($this->urlClass)::assistantsUrl() . '/' . $assistantId . '/files/' . $fileId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'DELETE');
@@ -615,7 +617,7 @@ class OpenAi
     public function createThread($data = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl();
+        $url = ($this->urlClass)::threadsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -629,7 +631,7 @@ class OpenAi
     public function retrieveThread($threadId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -644,7 +646,7 @@ class OpenAi
     public function modifyThread($threadId, $data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -658,7 +660,7 @@ class OpenAi
     public function deleteThread($threadId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'DELETE');
@@ -673,7 +675,7 @@ class OpenAi
     public function createThreadMessage($threadId, $data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -688,7 +690,7 @@ class OpenAi
     public function retrieveThreadMessage($threadId, $messageId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages/' . $messageId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages/' . $messageId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -704,7 +706,7 @@ class OpenAi
     public function modifyThreadMessage($threadId, $messageId, $data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages/' . $messageId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages/' . $messageId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -719,7 +721,7 @@ class OpenAi
     public function listThreadMessages($threadId, $query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages';
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -738,7 +740,7 @@ class OpenAi
     public function retrieveMessageFile($threadId, $messageId, $fileId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages/' . $messageId . '/files/' . $fileId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages/' . $messageId . '/files/' . $fileId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -754,7 +756,7 @@ class OpenAi
     public function listMessageFiles($threadId, $messageId, $query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/messages/' . $messageId . '/files';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/messages/' . $messageId . '/files';
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -782,7 +784,7 @@ class OpenAi
         }
         
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -797,7 +799,7 @@ class OpenAi
     public function retrieveRun($threadId, $runId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -813,7 +815,7 @@ class OpenAi
     public function modifyRun($threadId, $runId, $data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -828,7 +830,7 @@ class OpenAi
     public function listRuns($threadId, $query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs';
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -857,7 +859,7 @@ class OpenAi
         }
         
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/submit_tool_outputs';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/submit_tool_outputs';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $outputs);
@@ -872,7 +874,7 @@ class OpenAi
     public function cancelRun($threadId, $runId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/cancel';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/cancel';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST');
@@ -886,7 +888,7 @@ class OpenAi
     public function createThreadAndRun($data)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/runs';
+        $url = ($this->urlClass)::threadsUrl() . '/runs';
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $data);
@@ -902,7 +904,7 @@ class OpenAi
     public function retrieveRunStep($threadId, $runId, $stepId)
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/steps/' . $stepId;
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/steps/' . $stepId;
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'GET');
@@ -918,7 +920,7 @@ class OpenAi
     public function listRunSteps($threadId, $runId, $query = [])
     {
         $this->addAssistantsBetaHeader();
-        $url = Url::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/steps';
+        $url = ($this->urlClass)::threadsUrl() . '/' . $threadId . '/runs/' . $runId . '/steps';
         if (count($query) > 0) {
             $url .= '?' . http_build_query($query);
         }
@@ -934,7 +936,7 @@ class OpenAi
      */
     public function tts($opts)
     {
-        $url = Url::ttsUrl();
+        $url = ($this->urlClass)::ttsUrl();
         $this->baseUrl($url);
 
         return $this->sendRequest($url, 'POST', $opts);
@@ -1084,7 +1086,7 @@ class OpenAi
     protected function baseUrl(string &$url)
     {
         if ($this->customUrl != "") {
-            $url = str_replace(Url::ORIGIN, $this->customUrl, $url);
+            $url = str_replace(($this->urlClass)::ORIGIN, $this->customUrl, $url);
         }
     }
 }
