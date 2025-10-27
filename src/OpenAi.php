@@ -943,6 +943,136 @@ class OpenAi
     }
 
     /**
+     * @param array $opts
+     * @param null|callable $stream
+     * @return bool|string
+     * @throws Exception
+     */
+    public function response($opts, $stream = null)
+    {
+        if ($stream != null && array_key_exists('stream', $opts)) {
+            if (! $opts['stream']) {
+                throw new Exception(
+                    'Please provide a stream function. Check https://github.com/orhanerday/open-ai#stream-example for an example.'
+                );
+            }
+
+            $this->stream_method = $stream;
+        }
+
+        $opts['model'] = $opts['model'] ?? $this->chatModel;
+        $url = ($this->urlClass)::responsesUrl();
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'POST', $opts);
+    }
+
+    /**
+     * @param string $responseId
+     * @return bool|string
+     * @throws Exception
+     */
+    public function retrieveResponse($responseId)
+    {
+        $url = ($this->urlClass)::responseUrl($responseId);
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'GET');
+    }
+
+    /**
+     * @param array $query
+     * @return bool|string
+     * @throws Exception
+     */
+    public function listResponses($query = [])
+    {
+        $url = ($this->urlClass)::responsesUrl();
+        if (count($query) > 0) {
+            $url .= '?' . http_build_query($query);
+        }
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'GET');
+    }
+
+    /**
+     * @param string $responseId
+     * @return bool|string
+     * @throws Exception
+     */
+    public function deleteResponse($responseId)
+    {
+        $url = ($this->urlClass)::responseUrl($responseId);
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'DELETE');
+    }
+
+    /**
+     * @param string $responseId
+     * @return bool|string
+     * @throws Exception
+     */
+    public function cancelResponse($responseId)
+    {
+        $url = ($this->urlClass)::responseCancelUrl($responseId);
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'POST');
+    }
+
+    /**
+     * @param string $responseId
+     * @param array $opts
+     * @param null|callable $stream
+     * @return bool|string
+     * @throws Exception
+     */
+    public function responseInputTokens($responseId, $opts, $stream = null)
+    {
+        if ($stream != null && array_key_exists('stream', $opts)) {
+            if (! $opts['stream']) {
+                throw new Exception(
+                    'Please provide a stream function. Check https://github.com/orhanerday/open-ai#stream-example for an example.'
+                );
+            }
+
+            $this->stream_method = $stream;
+        }
+
+        $url = ($this->urlClass)::responseInputTokensUrl($responseId);
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'POST', $opts);
+    }
+
+    /**
+     * @param string $responseId
+     * @param array $opts
+     * @param null|callable $stream
+     * @return bool|string
+     * @throws Exception
+     */
+    public function responseInputItems($responseId, $opts, $stream = null)
+    {
+        if ($stream != null && array_key_exists('stream', $opts)) {
+            if (! $opts['stream']) {
+                throw new Exception(
+                    'Please provide a stream function. Check https://github.com/orhanerday/open-ai#stream-example for an example.'
+                );
+            }
+
+            $this->stream_method = $stream;
+        }
+
+        $url = ($this->urlClass)::responseInputItemsUrl($responseId);
+        $this->baseUrl($url);
+
+        return $this->sendRequest($url, 'POST', $opts);
+    }
+
+    /**
      * @param  int  $timeout
      */
     public function setTimeout(int $timeout)

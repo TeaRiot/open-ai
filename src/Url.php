@@ -187,4 +187,44 @@ class Url
     {
         return self::OPEN_AI_URL . "/audio/speech";
     }
+
+    /**
+     * Responses API root
+     */
+    public static function responsesUrl(): string
+    {
+        return self::OPEN_AI_URL . "/responses";
+    }
+
+    /**
+     * Responses API: specific response
+     */
+    public static function responseUrl(string $responseId): string
+    {
+        return self::responsesUrl() . '/' . $responseId;
+    }
+
+    /**
+     * Responses API: cancel a response
+     */
+    public static function responseCancelUrl(string $responseId): string
+    {
+        return self::responseUrl($responseId) . '/cancel';
+    }
+
+    /**
+     * Responses API: input tokens (append / stream input)
+     */
+    public static function responseInputTokensUrl(string $responseId): string
+    {
+        return self::responseUrl($responseId) . '/input-tokens';
+    }
+
+    /**
+     * Responses API: input items (structured input updates)
+     */
+    public static function responseInputItemsUrl(string $responseId): string
+    {
+        return self::responseUrl($responseId) . '/input-items';
+    }
 }
