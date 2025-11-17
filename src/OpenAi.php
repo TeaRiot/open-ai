@@ -23,6 +23,9 @@ class OpenAi
 
     protected $urlClass = Url::class;
 
+    protected $verifySSL = true;
+
+
     public function setProxyAccess(string $access)
     {
         $this->proxyAccess = $access;
@@ -31,6 +34,11 @@ class OpenAi
     public function setProxyIp(string $ip)
     {
         $this->proxyIp = $ip;
+    }
+
+    public function setVerifySSL(bool $verify)
+    {
+        $this->verifySSL = $verify;
     }
 
     public function __construct($OPENAI_API_KEY)
@@ -1165,6 +1173,7 @@ class OpenAi
         } else {
             $this->headers[0] = $this->contentTypes["application/json"];
         }
+
         $curl_info = [
             CURLOPT_URL            => $url,
             CURLOPT_RETURNTRANSFER => true,
@@ -1177,6 +1186,11 @@ class OpenAi
             CURLOPT_POSTFIELDS     => $post_fields,
             CURLOPT_HTTPHEADER     => $this->headers,
         ];
+
+        if (!$this->verifySSL) {
+            $curl_info[CURLOPT_SSL_VERIFYHOST] = 0;
+            $curl_info[CURLOPT_SSL_VERIFYPEER] = false;
+        }
 
         if ($opts == []) {
             unset($curl_info[CURLOPT_POSTFIELDS]);
