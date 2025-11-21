@@ -1229,8 +1229,16 @@ class OpenAi
      */
     protected function baseUrl(string &$url)
     {
-        if ($this->customUrl != "") {
-            $url = str_replace(($this->urlClass)::ORIGIN, $this->customUrl, $url);
+        if ($this->customUrl === '') {
+            return;
+        }
+
+        $parsed = parse_url($url);
+        $path = $parsed['path'] ?? '';
+        $url = rtrim($this->customUrl, '/') . $path;
+
+        if (!empty($parsed['query'])) {
+            $url .= '?' . $parsed['query'];
         }
     }
 }

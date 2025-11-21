@@ -7,6 +7,21 @@ class Url
     public const ORIGIN = 'https://api.openai.com';
     public const API_VERSION = 'v1';
     public const OPEN_AI_URL = self::ORIGIN . "/" . self::API_VERSION;
+    public static $BASE_URL = '';
+
+    public static function setBaseUrl(string $url): void
+    {
+        self::$BASE_URL = rtrim($url, '/');
+    }
+
+    protected static function base(string $path): string
+    {
+        if (self::$BASE_URL !== '') {
+            return self::$BASE_URL . $path;
+        }
+
+        return self::OPEN_AI_URL . $path;
+    }
 
     /**
      * @deprecated
@@ -15,7 +30,7 @@ class Url
      */
     public static function completionURL(string $engine): string
     {
-        return self::OPEN_AI_URL . "/engines/$engine/completions";
+        return self::base("/engines/$engine/completions");
     }
 
     /**
@@ -23,7 +38,7 @@ class Url
      */
     public static function completionsURL(): string
     {
-        return self::OPEN_AI_URL . "/completions";
+        return self::base("/completions");
     }
 
     /**
@@ -32,7 +47,7 @@ class Url
      */
     public static function editsUrl(): string
     {
-        return self::OPEN_AI_URL . "/edits";
+        return self::base("/edits");
     }
 
     /**
@@ -41,7 +56,7 @@ class Url
      */
     public static function searchURL(string $engine): string
     {
-        return self::OPEN_AI_URL . "/engines/$engine/search";
+        return self::base("/engines/$engine/search");
     }
 
     /**
@@ -50,7 +65,7 @@ class Url
      */
     public static function enginesUrl(): string
     {
-        return self::OPEN_AI_URL . "/engines";
+        return self::base("/engines");
     }
 
     /**
@@ -59,7 +74,7 @@ class Url
      */
     public static function engineUrl(string $engine): string
     {
-        return self::OPEN_AI_URL . "/engines/$engine";
+        return self::base("/engines/$engine");
     }
 
     /**
@@ -68,7 +83,7 @@ class Url
      */
     public static function classificationsUrl(): string
     {
-        return self::OPEN_AI_URL . "/classifications";
+        return self::base("/classifications");
     }
 
     /**
@@ -77,7 +92,7 @@ class Url
      */
     public static function moderationUrl(): string
     {
-        return self::OPEN_AI_URL . "/moderations";
+        return self::base("/moderations");
     }
 
     /**
@@ -86,7 +101,7 @@ class Url
      */
     public static function transcriptionsUrl(): string
     {
-        return self::OPEN_AI_URL . "/audio/transcriptions";
+        return self::base("/audio/transcriptions");
     }
 
     /**
@@ -95,7 +110,7 @@ class Url
      */
     public static function translationsUrl(): string
     {
-        return self::OPEN_AI_URL . "/audio/translations";
+        return self::base("/audio/translations");
     }
 
     /**
@@ -104,7 +119,7 @@ class Url
      */
     public static function filesUrl(): string
     {
-        return self::OPEN_AI_URL . "/files";
+        return self::base("/files");
     }
 
     /**
@@ -113,7 +128,7 @@ class Url
      */
     public static function fineTuneUrl(): string
     {
-        return self::OPEN_AI_URL . "/fine_tuning/jobs";
+        return self::base("/fine_tuning/jobs");
     }
 
     /**
@@ -122,7 +137,7 @@ class Url
      */
     public static function fineTuneModel(): string
     {
-        return self::OPEN_AI_URL . "/models";
+        return self::base("/models");
     }
 
     /**
@@ -131,7 +146,7 @@ class Url
      */
     public static function answersUrl(): string
     {
-        return self::OPEN_AI_URL . "/answers";
+        return self::base("/answers");
     }
 
     /**
@@ -140,7 +155,7 @@ class Url
      */
     public static function imageUrl(): string
     {
-        return self::OPEN_AI_URL . "/images";
+        return self::base("/images");
     }
 
     /**
@@ -149,7 +164,7 @@ class Url
      */
     public static function embeddings(): string
     {
-        return self::OPEN_AI_URL . "/embeddings";
+        return self::base("/embeddings");
     }
 
     /**
@@ -158,7 +173,7 @@ class Url
      */
     public static function chatUrl(): string
     {
-        return self::OPEN_AI_URL . "/chat/completions";
+        return self::base("/chat/completions");
     }
 
     /**
@@ -167,7 +182,7 @@ class Url
      */
     public static function assistantsUrl(): string
     {
-        return self::OPEN_AI_URL . "/assistants";
+        return self::base("/assistants");
     }
 
     /**
@@ -176,7 +191,7 @@ class Url
      */
     public static function threadsUrl(): string
     {
-        return self::OPEN_AI_URL . "/threads";
+        return self::base("/threads");
     }
 
     /**
@@ -185,7 +200,7 @@ class Url
      */
     public static function ttsUrl(): string
     {
-        return self::OPEN_AI_URL . "/audio/speech";
+        return self::base("/audio/speech");
     }
 
     /**
@@ -193,7 +208,7 @@ class Url
      */
     public static function responsesUrl(): string
     {
-        return self::OPEN_AI_URL . "/responses";
+        return self::base("/responses");
     }
 
     /**
@@ -201,7 +216,7 @@ class Url
      */
     public static function responseUrl(string $responseId): string
     {
-        return self::responsesUrl() . '/' . $responseId;
+        return static::responsesUrl() . '/' . $responseId;
     }
 
     /**
@@ -209,7 +224,7 @@ class Url
      */
     public static function responseCancelUrl(string $responseId): string
     {
-        return self::responseUrl($responseId) . '/cancel';
+        return static::responseUrl($responseId) . '/cancel';
     }
 
     /**
@@ -217,7 +232,7 @@ class Url
      */
     public static function responseInputTokensUrl(string $responseId): string
     {
-        return self::responseUrl($responseId) . '/input-tokens';
+        return static::responseUrl($responseId) . '/input-tokens';
     }
 
     /**
@@ -225,6 +240,6 @@ class Url
      */
     public static function responseInputItemsUrl(string $responseId): string
     {
-        return self::responseUrl($responseId) . '/input-items';
+        return static::responseUrl($responseId) . '/input-items';
     }
 }
